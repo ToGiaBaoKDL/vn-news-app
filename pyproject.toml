@@ -1,0 +1,26 @@
+[project]
+name = "vn-news-app"
+version = "0.1.0"
+requires-python = ">=3.12,<3.13"
+dependencies = []
+
+[tool.uv.workspace]
+members = ["api"]
+
+[dependency-groups]
+dev = [
+  "ruff>=0.4",
+]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+src = ["api/src"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"
