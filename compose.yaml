@@ -2,18 +2,13 @@ name: vn-news-app
 
 services:
   api:
-    build:
-      context: .
-      dockerfile: api/Dockerfile
-      additional_contexts:
-        vn-news-platform-lib: ../vn-news-platform-lib
+    image: docker.io/toilachuoituyet/vn-news-api:${VN_NEWS_RELEASE_TAG:?set VN_NEWS_RELEASE_TAG}
     ports:
-      - "8000:8000"
+      - "${APP_BIND_ADDRESS:-127.0.0.1}:8000:8000"
     environment:
-      TGB_ENV: local
       VN_NEWS_CONFIG_DIR: /app/configs
     volumes:
-      - ../vn-news-config/configs:/app/configs:ro
+      - ${VN_NEWS_CONFIG_HOST_DIR:?set VN_NEWS_CONFIG_HOST_DIR}:/app/configs:ro
     healthcheck:
       test:
         [
@@ -28,15 +23,14 @@ services:
       start_period: 20s
 
   web:
-    image: node:22-bookworm
-    working_dir: /app
-    command: sh -c "npm ci && npm run dev -- --hostname 0.0.0.0"
+    image: docker.io/toilachuoituyet/vn-news-web:${VN_NEWS_RELEASE_TAG:?set VN_NEWS_RELEASE_TAG}
+    depends_on:
+      api:
+        condition: service_healthy
     ports:
-      - "3000:3000"
+      - "${APP_BIND_ADDRESS:-127.0.0.1}:3000:3000"
     environment:
-      NEXT_PUBLIC_API_BASE_URL: http://localhost:8000
-    volumes:
-      - ./web:/app
+      NEXT_PUBLIC_API_BASE_URL: http://api:8000
     healthcheck:
       test:
         [
