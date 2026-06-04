@@ -5,7 +5,7 @@ services:
     image: docker.io/toilachuoituyet/vn-news-api:${VN_NEWS_RELEASE_TAG:?set VN_NEWS_RELEASE_TAG}
     restart: unless-stopped
     ports:
-      - "${APP_BIND_ADDRESS:-127.0.0.1}:8000:8000"
+      - "${VN_NEWS_APP_BIND_ADDRESS:-127.0.0.1}:8000:8000"
     environment:
       VN_NEWS_CONFIG_DIR: /app/configs
     volumes:
@@ -30,7 +30,7 @@ services:
       api:
         condition: service_healthy
     ports:
-      - "${APP_BIND_ADDRESS:-127.0.0.1}:3000:3000"
+      - "${VN_NEWS_APP_BIND_ADDRESS:-127.0.0.1}:3000:3000"
     environment:
       NEXT_PUBLIC_API_BASE_URL: http://api:8000
     healthcheck:
