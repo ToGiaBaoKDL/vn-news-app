@@ -1,10 +1,19 @@
 import { Activity } from "lucide-react";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000";
+export const dynamic = "force-dynamic";
+
+function apiBaseUrl() {
+  const value = process.env.VN_NEWS_API_BASE_URL;
+  if (!value) {
+    throw new Error("VN_NEWS_API_BASE_URL is required");
+  }
+  return value;
+}
 
 async function getSources() {
+  const baseUrl = apiBaseUrl();
   try {
-    const response = await fetch(`${API_BASE_URL}/sources`, { cache: "no-store" });
+    const response = await fetch(`${baseUrl}/sources`, { cache: "no-store" });
     if (!response.ok) {
       return [];
     }
