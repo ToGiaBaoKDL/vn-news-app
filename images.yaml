@@ -1,0 +1,20 @@
+version: 1
+owner: vn-news-app
+platforms:
+  - linux/amd64
+  - linux/arm64
+
+images:
+  app_api:
+    image_repository: vn-news-api
+    build:
+      context: vn-news-app
+      dockerfile: api/Dockerfile
+      additional_contexts:
+        vn-news-platform-lib: vn-news-platform-lib
+
+  app_web:
+    image_repository: vn-news-web
+    build:
+      context: vn-news-app
+      dockerfile: web/Dockerfile
