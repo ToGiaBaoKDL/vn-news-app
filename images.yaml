@@ -4,9 +4,18 @@ platforms:
   - linux/amd64
   - linux/arm64
 
+change_paths:
+  - .github/workflows/publish-images.yaml
+  - .dockerignore
+  - images.yaml
+
 images:
   app_api:
     image_repository: vn-news-api
+    change_paths:
+      - api/**
+      - pyproject.toml
+      - uv.lock
     build:
       context: vn-news-app
       dockerfile: api/Dockerfile
@@ -15,6 +24,8 @@ images:
 
   app_web:
     image_repository: vn-news-web
+    change_paths:
+      - web/**
     build:
       context: vn-news-app
       dockerfile: web/Dockerfile
